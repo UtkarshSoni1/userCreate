@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>All Users</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    html, body {
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+</head>
+<body class="bg-zinc-900 text-white">
+  <h1 class="text-3xl text-center tracking-tighter">All users</h1>
+  <a href="/" class="mt-5 ml-5 text-blue-400 block">Go to home</a>
+  <div class="h-full w-full flex flex-wrap gap-3 p-5">
+    <% if(users.length > 0){ %>
+      <% users.forEach(function(val){ %>
+        <div class="h-[350px] w-[250px] bg-zinc-800 p-2.5 rounded-lg">
+          <div class="h-[200px] w-[230px] bg-zinc-700 mx-auto rounded-md">
+            <a href="/profile/<%= val._id %>">
+              <img src="<%= val.image %>" class="object-cover h-full w-full overflow-hidden rounded-md hover:border-dotted hover:border-2  hover:border-blue-400" >
+            </a>
+          </div>
+          <h1 class="text-2xl text-center mt-2"> <%= val.name %> </h1>
+          <h2 class="text-[20px] text-zinc-400 text-center"><%= val.email %></h2>
+          <div class="mt-5 flex justify-between items-center">
+            <a href="/edit/<%= val._id %>" class="text-blue-400 ">Edit</a>
+            <a href="/post/<%= val._id %>" class="text-green-400 ">Post</a>
+            <a href="/delete/<%= val._id %>" class="text-red-400 ">Delete</a>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <h1 class="text-2xl text-zinc-500 text-center tracking-tighter w-full">No Users Yet</h1>
+    <% } %>
+  </div>
+</body>
+</html>

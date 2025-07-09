@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        
+        html, body{
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="h-full w-full bg-zinc-900 text-white p-10">
+        <div class="flex gap-3 w-full items-center">
+            <div class="h-[200px] w-[200px] ">
+                <img src="<%= user.image %>" alt="" class="object-cover h-full w-full overflow-hidden rounded-full">
+            </div>
+            <div>
+                <h1 class="text-4xl mb-3">@<%= user.name %></h1>
+                <h1 class="text-3xl mb-3 text-zinc-600"><%= user.email %></h1>
+                <div class="w-52 h-10 flex flex-wrap gap-3">
+                    <div class="text-white bg-blue-400 w-20 h-10 rounded-md flex items-center justify-center">
+                        <a href="/post/<%= user.id %>" >Add Post</a>                   
+                    </div>
+                    <div class="text-white bg-zinc-400 w-20 h-10 rounded-md flex items-center justify-center">
+                        <a href="/edit/<%= user.id %>">Edit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h1 class="text-2xl text-center mt-10">Posts</h1>
+        <div class="post-container w-full h-[400px] border-zinc-800 border-2 p-5 rounded-md flex flex-wrap gap-3">
+            <% if( user.posts && user.posts.length > 0){ %>
+                <% user.posts.slice().reverse().forEach(function(val){ %>
+                    <div class="border-2 border-zinc-800 w-96 h-40 rounded-md p-3 ">
+                        <h1 class="text-white text-2xl "><%= val.content %></h1>
+                        <div class="w-full flex justify-between items-center mt-18">
+                            <h1 class="text-blue-400 ">@<%= user.name %></h1>
+                            <a href="/like/<%= val._id %>" class="text-red-400 hover:underline">
+                                Like (<%= val.likes.length %>)
+                            </a>
+                        </div>
+                    </div>
+                    <% }) %>
+                <% } else { %>
+                    <h1 class="text-white text-2xl"> No posts yet.</h1>
+                    <% } %>
+        </div>
+    </div>
+</body>
+</html>
