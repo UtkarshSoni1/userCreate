@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config();
 const app = express();
 const path = require('path');
 const fs = require('node:fs');
@@ -13,8 +14,6 @@ const multer = require('multer');
 const crypto = require('node:crypto')
 
 app.use(cookieParser());
-
-
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -219,6 +218,6 @@ app.get('/profile-others/:id',async (req, res) => {
     res.render('profileOthers',{user});
 })
 
-app.listen(3000,() => {
+app.listen(process.env.PORT,() => {
     console.log("server running");
 });
