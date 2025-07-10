@@ -3,7 +3,6 @@ const app = express();
 const path = require('path');
 const fs = require('node:fs');
 const usermodel = require('./models/user');
-// const user = require('./models/user');
 const postmodel = require('./models/post');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
@@ -12,9 +11,9 @@ const { hash } = require('node:crypto');
 const { type } = require('node:os');
 const multer = require('multer');
 const crypto = require('node:crypto')
-// const user = require('./models/user');
+
 app.use(cookieParser());
-// const user = require('./models/user');
+
 
 
 const storage = multer.diskStorage({
@@ -35,15 +34,41 @@ app.use(express.json());
 app.use(express.urlencoded({extended : true}));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.set('views', path.join(__dirname, 'views'));
+
 app.set('view engine','ejs');
+
+const isLoggedIn = async (req, res, next) => {
+  try {
+    const token = req.cookies.token;
+
+    if (!token) {
+      return res.redirect('/login'); 
+    }
+
+    const decoded = jwt.verify(token, "secret");
+
+    const user = await usermodel.findById(decoded.id);
+    if (!user) {
+      return res.redirect('/login'); 
+    }
+
+    req.user = user; 
+    next();
+  } catch (err) {
+    return res.redirect('/login'); 
+  }
+};
 
 app.get('/', (req, res) => {
     res.render('index');
 })
 
-app.get('/home',(req, res) => {
-    res.render('home');
+app.get('/home/:id',isLoggedIn, async (req, res) => {
+    let users = await usermodel.find().populate("posts").exec();
+    let mainUser = await usermodel.findOne({_id : req.params.id});
+
+    res.render('home',{users,mainUser});
+   
 });
 
 app.post('/create',(req, res) => {
@@ -58,16 +83,16 @@ app.post('/create',(req, res) => {
                 
             });
             
-            res.redirect('/home');
-            // res.send(CreatedUser);
+            res.redirect(`/home/${CreatedUser._id}`);
+            
         });
     });
-    // res.send(CreatedUser);
+    
 })
 
 app.get('/show',async (req, res) => {
     let CreatedUsers = await usermodel.find();
-    // res.send(CreatedUsers);
+    
     res.render('show',{users : CreatedUsers});
 });
 
@@ -75,40 +100,16 @@ app.get('/login',(req, res) => {
     res.render('login');
 });
 
-const isLoggedIn = async (req, res, next) => {
-  try {
-    const token = req.cookies.token;
-
-    if (!token) {
-      return res.redirect('/login'); // not logged in
-    }
-
-    const decoded = jwt.verify(token, "secret");
-
-    const user = await usermodel.findById(decoded.id);
-    if (!user) {
-      return res.redirect('/login'); // user not found
-    }
-
-    req.user = user; // attach user to request
-    next();
-  } catch (err) {
-    return res.redirect('/login'); // invalid or expired token
-  }
-};
-
-
 app.post('/login',async (req, res) => {
     let {email, password} = req.body;
     let user = await usermodel.findOne({email : email});
     bcrypt.compare(password,user.password,(err,result) => {
-        // console.log(user.password);
-        // console.log(result);
+        
         if(result) {
 
             const token = jwt.sign({ id: user._id.toString() }, "secret");
             res.cookie("token",token);
-            res.redirect(`/home`);
+            res.redirect(`/home/${user._id}`);
         }
         else res.send("no you cant login");
     })
@@ -116,7 +117,7 @@ app.post('/login',async (req, res) => {
 
 app.get('/logout', (req, res) => {
     res.cookie("token","");
-    res.send("cookie reseted");
+    res.redirect('/login');
 })
 
 app.get('/delete-all', async (req, res) => {
@@ -149,7 +150,7 @@ app.get('/edit/:id',isLoggedIn,async (req, res) => {
 
 app.get('/delete/:id',isLoggedIn,async (req, res) => {
     let user = await usermodel.findOneAndDelete({_id : req.params.id});
-    // res.echo(user);
+    
     res.redirect('/show');
 });
 
@@ -168,7 +169,6 @@ app.post('/post/:id',isLoggedIn,async (req,res ) => {
     await usermodel.findByIdAndUpdate(req.params.id, {
     $push: { posts: post._id }});
     
-    // console.log(post);
     res.redirect(`/profile/${req.params.id}`);
 });
 
@@ -186,17 +186,16 @@ app.get('/like/:id', isLoggedIn, async (req, res) => {
         const alreadyLiked = post.likes.includes(userId);
 
         if (alreadyLiked) {
-            // Unlike if already liked
+            
             post.likes.pull(userId);
         } else {
-            // Like
+           
             post.likes.push(userId);
         }
 
         await post.save();
 
-        // Redirect to author's profile (not post ID!)
-        res.redirect(`/profile/${post.author}`);
+        res.redirect(`/home/${post.author}`);
     } catch (err) {
         console.error(err);
         res.status(500).send("Internal Server Error");
@@ -215,6 +214,10 @@ app.get('/profile/:id', isLoggedIn, async (req, res) => {
     res.render('profile', { user });
 });
 
+app.get('/profile-others/:id',async (req, res) => {
+    let user = await usermodel.findOne({_id : req.params.id}).populate("posts").exec();
+    res.render('profileOthers',{user});
+})
 
 app.listen(3000,() => {
     console.log("server running");

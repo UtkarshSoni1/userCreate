@@ -1,80 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fixed Header & Sidebar, Scrollable Content</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* CRITICAL: Prevent body/html from scrolling */
-        html, body {
-            height: 100%; /* Makes html and body take full viewport height */
-            width: 100%; /* Ensures full width */
+        html,
+        body {
+            height: 100%;
+            width: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Prevents global scrolling */
+            overflow: hidden;
             background-color: #1f2937;
         }
-        /* CUSTOM CSS TO HIDE SCROLLBARS */
+
         .hide-scrollbar {
-            /* For Webkit browsers (Chrome, Safari, Edge, Opera) */
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            
         }
 
         .hide-scrollbar::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
+            display: none;
         }
     </style>
 </head>
+
 <body>
-    <header class="h-20 bg-zinc-800 flex items-center justify-center
-                   fixed top-0 left-0 right-0 z-20">
+    <header class="h-20 bg-zinc-800 flex 
+                   fixed top-0 left-0 right-0 z-20 justify-center items-center border-b-2 border-zinc-500">
         <h1 class="text-3xl text-center text-white font-semibold">Home Page</h1>
+        <a href="/logout" class="text-2xl text-white hover:text-red-400 right-20 fixed  ">logout</a>
     </header>
 
-    <div id="side-bar" class="w-1/4 bg-zinc-700 p-5 flex flex-col items-center gap-5
+    <div id="side-bar" class="w-1/4 border-r-2 border-zinc-500 bg-zinc-800 p-5 flex flex-col items-center gap-5
                               fixed top-20 left-0 bottom-0 z-10">
         <h1 class="text-3xl font-semibold text-white">My PostWeb</h1>
-        <a href="/home" class="text-2xl font-semibold text-white hover:text-blue-400">Home</a>
-        <a href="/profile/user.id" class="text-2xl font-semibold text-white hover:text-blue-400">Profile</a>
-        <a href="/post/user.id" class="text-2xl font-semibold text-white hover:text-blue-400">Create a Post</a>
+        <a href="/home/<%= mainUser.id %>" class="text-2xl font-semibold text-white hover:text-blue-400">Home</a>
+        <a href="/profile/<%= mainUser.id %>" class="text-2xl font-semibold text-white hover:text-blue-400">Profile</a>
+        <a href="/post/<%= mainUser.id %>" class="text-2xl font-semibold text-white hover:text-blue-400">Create a
+            Post</a>
         <a href="#" class="text-2xl font-semibold text-white hover:text-blue-400">Settings</a>
-        <!-- <div class="h-96 w-full text-white text-center mt-10 border border-white">Extra Sidebar Content</div> -->
-        <!-- <div class="h-96 w-full text-white text-center mt-10 border border-white">More Extra Sidebar Content (this will be cut off)</div> -->
+        <div class="flex gap-3 w-full items-center  mt-20">
+            <img src="<%= mainUser.image %>" class="object-cover h-10 w-10 overflow-hidden rounded-full">
+            <h1 class="text-2xl text-blue-400">
+                @<%= mainUser.name %>
+            </h1>
+        </div>
     </div>
 
     <div id="Main" class="bg-zinc-800 overflow-y-auto p-5 flex flex-col gap-10 items-center
                           absolute top-20 left-1/4 right-0 bottom-0 z-0 hide-scrollbar ">
-        <div class="min-h-40 w-[90%] border-2 border-zinc-700 p-5 rounded-lg bg-zinc-900 text-white hide-scrollbar">
-            <div class="flex gap-3 w-full items-center ">
-                <img src="/images/image.png" class="object-cover h-10 w-10 overflow-hidden rounded-full">
-                <h1 class="text-2xl text-blue-400">@username1</h1>
-            </div>
-            <div class="w-full h-[80%] overflow-hidden mt-3 hide-scrollbar">
-                <p class="text-xl mt-2 ">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero aliquid, natus explicabo quae esse laborum repellat! Dolore deserunt dicta totam ipsam aliquam omnis molestias fugit minima unde recusandae repudiandae, error laudantium itaque repellat libero molestiae accusantium atque dolores aut, saepe commodi? Fugiat accusamus amet reprehenderit officiis quae! Vero, amet animi.Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla laudantium possimus doloribus quas alias?Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, ipsa?</p>
-                <div class="w-full flex gap-20 items-center mt-8 ">
-                    <a href="#" class="text-red-400 text-2xl hover:underline">Like</a>
-                    <a href="#" class="text-blue-400 text-2xl hover:underline">Comment</a>
-                    <a href="#" class="text-green-400 text-2xl hover:underline">Share</a>
-                </div>
-            </div>
-        </div>
-        <div class="min-h-40 w-[90%] border-2 border-zinc-700 p-5 rounded-lg bg-zinc-900 text-white">
-            <div class="flex gap-3 w-full items-center ">
-                <img src="/images/image.png" class="object-cover h-10 w-10 overflow-hidden rounded-full">
-                <h1 class="text-2xl text-blue-400">@username1</h1>
-            </div>
-            <div class="w-full h-[80%] overflow-y-auto mt-3 hi">
-                <p class="text-xl mt-2">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero aliquid, natus explicabo quae esse laborum repellat!?</p>
-                <div class="w-full flex gap-20 items-center mt-8 ">
-                    <a href="#" class="text-red-400 text-2xl hover:underline">Like</a>
-                    <a href="#" class="text-blue-400 text-2xl hover:underline">Comment</a>
-                    <a href="#" class="text-green-400 text-2xl hover:underline">Share</a>
-                </div>
-            </div>
-        </div>
-        
+        <% if (users.length> 0) { %>
+            <% users.slice().reverse().forEach(function(val) { %>
+                <% if (val.posts && val.posts.length> 0) { %>
+                    <% val.posts.slice().reverse().forEach(function(post) { %>
+                        <div
+                            class="max-h-86 w-[90%] border-2 border-zinc-700 p-3 rounded-lg bg-zinc-900 text-white hide-scrollbar flex flex-col gap-2">
+                            <div class="flex gap-3 w-full items-center h-[20%]">
+                                <img src="<%= val.image %>" class="object-cover h-10 w-10 overflow-hidden rounded-full">
+                                <a href="/profile-others/<%= val.id %>">
+                                    <h1 class="text-2xl text-blue-400">
+                                        @<%= val.name %>
+                                    </h1>
+                                </a>
+                            </div>
+                            <div class="w-full h-[50%]  mt-3 overflow-y-auto hide-scrollbar">
+                                <p class="text-xl">
+                                    <%= post.content || post || '[no content]' %>
+                                </p>
+
+                            </div>
+                            <div class="w-full flex gap-20 items-end h-[20%]">
+                                <a href="/like/<%= post.id %>" class="text-red-400 text-2xl hover:underline"><%=post.likes.length%> Like</a>
+                                <a href="#" class="text-blue-400 text-2xl hover:underline">Comment</a>
+                                <a href="#" class="text-green-400 text-2xl hover:underline">Share</a>
+                            </div>
+                        </div>
+                        <% }) %>
+                            <% } %>
+                                <% }) %>
+                                    <% } else { %>
+                                        <h1 class="text-white text-2xl">No posts yet.</h1>
+                                        <% } %>
+
+
+
+
+
     </div>
 </body>
+
 </html>
