@@ -12,13 +12,13 @@ const { hash } = require('node:crypto');
 const { type } = require('node:os');
 const multer = require('multer')
 const crypto = require('node:crypto')
-
 const { storage } = require('./config/multer-config'); 
 const upload = multer({ storage: storage });
 
 app.use(cookieParser());
 
 
+app.use("/api/users" , uploadRoute);
 app.use(express.json());
 app.use(express.urlencoded({extended : true}));
 app.use(express.static(path.join(__dirname, 'public')));
