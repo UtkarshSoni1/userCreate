@@ -45,7 +45,7 @@
             Post</a>
         <a href="#" class="text-2xl font-semibold text-white hover:text-blue-400">Settings</a>
         <div class="flex gap-3 w-full items-center  mt-20">
-            <img src="<%= mainUser.image && mainUser.image.startsWith('http') ? user.image : ('/' + user.image) %>"
+            <img src="<%= mainUser.image && mainUser.image.startsWith('http') ? mainUser.image : ('/' + mainUser.image) %>"
                 class="object-cover h-full w-full overflow-hidden rounded-full" alt="Profile" />
             <h1 class="text-2xl text-blue-400">
                 @<%= mainUser.name %>
@@ -62,7 +62,7 @@
                         <div
                             class="max-h-86 w-[90%] border-2 border-zinc-700 p-3 rounded-lg bg-zinc-900 text-white hide-scrollbar flex flex-col gap-2">
                             <div class="flex gap-3 w-full items-center h-[20%]">
-                                <img src="<%= val.image && val.image.startsWith('http') ? user.image : ('/' + user.image) %>"
+                                <img src="<%= val.image && val.image.startsWith('http') ? val.image : ('/' + val.image) %>"
                                     class="object-cover h-10 w-10 overflow-hidden rounded-full" alt="Profile" />
 
                                     <a href="/profile-others/<%= val.id %>">
