@@ -117,7 +117,7 @@ app.get('/delete-all', async (req, res) => {
 
 app.post('/edit/:id', isLoggedIn, upload.single('newimage'), async (req, res) => {
     const { newname, newemail } = req.body;
-    const newimage = req.file ? `/images/uploads/${req.file.filename}` : undefined;
+    const newimage = req.file ? req.file.path : undefined;
 
     const updateData = {
         name: newname,
