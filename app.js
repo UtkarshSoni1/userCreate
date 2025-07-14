@@ -185,7 +185,7 @@ app.get('/like/:id', isLoggedIn, async (req, res) => {
 
         await post.save();
 
-        res.redirect(`/home/${post.author}`);
+        res.redirect(`/home/${userId}`);
     } catch (err) {
         console.error(err);
         res.status(500).send("Internal Server Error");
