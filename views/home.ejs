@@ -20,7 +20,7 @@
         .hide-scrollbar {
             -ms-overflow-style: none;
             scrollbar-width: none;
-            
+
         }
 
         .hide-scrollbar::-webkit-scrollbar {
@@ -45,7 +45,8 @@
             Post</a>
         <a href="#" class="text-2xl font-semibold text-white hover:text-blue-400">Settings</a>
         <div class="flex gap-3 w-full items-center  mt-20">
-            <img src="<%= mainUser.image %>" class="object-cover h-10 w-10 overflow-hidden rounded-full">
+            <img src="<%= mainUser.image && mainUser.image.startsWith('http') ? user.image : ('/' + user.image) %>"
+                class="object-cover h-full w-full overflow-hidden rounded-full" alt="Profile" />
             <h1 class="text-2xl text-blue-400">
                 @<%= mainUser.name %>
             </h1>
@@ -61,8 +62,10 @@
                         <div
                             class="max-h-86 w-[90%] border-2 border-zinc-700 p-3 rounded-lg bg-zinc-900 text-white hide-scrollbar flex flex-col gap-2">
                             <div class="flex gap-3 w-full items-center h-[20%]">
-                                <img src="<%= val.image %>" class="object-cover h-10 w-10 overflow-hidden rounded-full">
-                                <a href="/profile-others/<%= val.id %>">
+                                <img src="<%= val.image && val.image.startsWith('http') ? user.image : ('/' + user.image) %>"
+                                    class="object-cover h-10 w-10 overflow-hidden rounded-full" alt="Profile" />
+
+                                    <a href="/profile-others/<%= val.id %>">
                                     <h1 class="text-2xl text-blue-400">
                                         @<%= val.name %>
                                     </h1>
@@ -75,7 +78,9 @@
 
                             </div>
                             <div class="w-full flex gap-20 items-end h-[20%]">
-                                <a href="/like/<%= post.id %>" class="text-red-400 text-2xl hover:underline"><%=post.likes.length%> Like</a>
+                                <a href="/like/<%= post.id %>" class="text-red-400 text-2xl hover:underline">
+                                    <%=post.likes.length%> Like
+                                </a>
                                 <a href="#" class="text-blue-400 text-2xl hover:underline">Comment</a>
                                 <a href="#" class="text-green-400 text-2xl hover:underline">Share</a>
                             </div>

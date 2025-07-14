@@ -19,7 +19,9 @@
     <div class="h-full w-full bg-zinc-900 text-white p-10">
         <div class="flex gap-3 w-full items-center">
             <div class="h-[200px] w-[200px] ">
-                <img src="<%= user.image %>" alt="" class="object-cover h-full w-full overflow-hidden rounded-full">
+                <img src="<%= user.image && user.image.startsWith('http') ? user.image : ('/' + user.image) %>"
+                    class="object-cover h-full w-full overflow-hidden rounded-full" alt="Profile" />
+
             </div>
             <div>
 
@@ -36,7 +38,8 @@
                         <a href="/edit/<%= user.id %>">Edit</a>
                     </div>
                 </div>
-                <div class="w-10 h-10 flex items-center justify-center hover:border-2 hover:border-zinc-500 rounded-md left-2 absolute top-5">
+                <div
+                    class="w-10 h-10 flex items-center justify-center hover:border-2 hover:border-zinc-500 rounded-md left-2 absolute top-5">
                     <a href="/home/<%= user.id %>" class="text-2xl"> <- </a>
                 </div>
             </div>
