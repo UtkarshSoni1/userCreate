@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const cloudinary = require("./cloudinary");
-const upload = require("./multer-config");
+const multer = require('multer');
+const { storage } = require("./multer-config");
+const upload = multer({ storage: storage });
+
 
  router.post('/upload', upload.single('image'), function (req, res) {
   cloudinary.uploader.upload(req.file.path, function (err, result){
