@@ -14,7 +14,7 @@ const multer = require('multer')
 const crypto = require('node:crypto')
 const { storage } = require('./config/multer-config'); 
 const upload = multer({ storage: storage });
-
+const uploadRoute = require('./config/routeUpload')
 app.use(cookieParser());
 
 
