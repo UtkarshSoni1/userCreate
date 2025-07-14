@@ -10,9 +10,9 @@ const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const { hash } = require('node:crypto');
 const { type } = require('node:os');
-const multer = require('multer');
+
 const crypto = require('node:crypto')
-const multer = require('multer');
+
 const { storage } = require('./config/multer-config'); 
 const upload = multer({ storage: storage });
 
