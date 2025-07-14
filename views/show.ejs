@@ -24,8 +24,9 @@
         <div class="h-[350px] w-[250px] bg-zinc-800 p-2.5 rounded-lg">
           <div class="h-[200px] w-[230px] bg-zinc-700 mx-auto rounded-md">
             <a href="/profile/<%= val._id %>">
-              <img src="<%= val.image && val.image.startsWith('http') ? val.image : ('/' + val.image) %>"
-                class="object-cover h-full w-full overflow-hidden rounded-md hover:border-dotted hover:border-2  hover:border-blue-400" alt="Profile" />
+              <img src="<%= val.image && val.image.startsWith('http') ? val.image : ('/uploads/' + val.image) %>"
+                class="object-cover h-full w-full overflow-hidden rounded-md hover:border-dotted hover:border-2 hover:border-blue-400"
+                alt="Profile" />
             </a>
           </div>
           <h1 class="text-2xl text-center mt-2">
