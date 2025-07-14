@@ -19,8 +19,6 @@
     <div class="h-full w-full bg-zinc-900 text-white p-10">
         <div class="flex gap-3 w-full items-center">
             <div class="h-[200px] w-[200px] ">
-                <!-- Debug: Show the image URL -->
-                <p class="text-xs text-gray-400 mb-2">Image URL: <%= user.image %></p>
                 <img src="<%= user.image %>"
                     class="object-cover h-full w-full overflow-hidden rounded-full" alt="Profile" 
                     onerror="this.src='/images/image.png'; console.log('Image failed to load:', this.src);" />

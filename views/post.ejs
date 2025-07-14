@@ -21,7 +21,7 @@
         <div class="m-5">
             <div class="flex gap-3 w-full ">
                 <div class="h-[40px] w-[40px] ">
-                <img src="<%= user.image && user.image.startsWith('http') ? user.image : ('/' + user.image) %>" alt="Profile" />
+                <img src="<%= user.image && user.image.startsWith('http') ? user.image : ('/' + user.image) %>" alt="Profile" class="object-cover h-10 w-10 overflow-hidden rounded-full"/>
                 </div>
                 <h1 class="text-3xl mb-3">Hey, <%= user.name %></h1>
             </div>
