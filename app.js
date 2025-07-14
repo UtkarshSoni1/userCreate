@@ -117,6 +117,13 @@ app.get('/delete-all', async (req, res) => {
 
 app.post('/edit/:id', isLoggedIn, upload.single('newimage'), async (req, res) => {
     const { newname, newemail } = req.body;
+    
+    // Debug: Log the entire file object to see what Cloudinary returns
+    if (req.file) {
+        console.log('File object from Cloudinary:', req.file);
+    }
+    
+    // For Cloudinary, use req.file.path which should contain the Cloudinary URL
     const newimage = req.file ? req.file.path : undefined;
 
     const updateData = {
@@ -128,6 +135,7 @@ app.post('/edit/:id', isLoggedIn, upload.single('newimage'), async (req, res) =>
         updateData.image = newimage;
     }
 
+    console.log('Update data:', updateData); // Debug log
     await usermodel.findByIdAndUpdate(req.params.id, updateData, { new: true });
     res.redirect(`/profile/${req.params.id}`);
 });
