@@ -204,9 +204,10 @@ app.get('/profile/:id', isLoggedIn, async (req, res) => {
     res.render('profile', { user });
 });
 
-app.get('/profile-others/:id',async (req, res) => {
+app.get('/profile-others/:id',isLoggedIn,async (req, res) => {
     let user = await usermodel.findOne({_id : req.params.id}).populate("posts").exec();
-    res.render('profileOthers',{user});
+    let loggeduser =await req.user;
+    res.render('profileOthers',{user , loggeduser});
 })
 
 app.listen(process.env.PORT,() => {
